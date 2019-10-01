@@ -23,6 +23,9 @@ const AYLIEN_API_KEY = process.env.AYLIEN_API_KEY;
 
 const use_db = process.env.use_db;
 
+const functionName = 'serverless';
+const BASE_PATH = `/.netlify/functions/${functionName}`;
+
 module.exports = {
   DATABASE_URL,
   TEST_DATABASE_URL,
@@ -36,4 +39,5 @@ module.exports = {
   use_db,
   AYLIEN_API_ID,
   AYLIEN_API_KEY,
+  BASE_PATH,
 };
