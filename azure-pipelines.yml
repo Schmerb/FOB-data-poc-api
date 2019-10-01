@@ -1,0 +1,52 @@
+variables:
+- group: Octopus
+
+pool:
+  name: Hosted Ubuntu 1604
+  demands:
+  - npm
+  - node.js
+
+steps:
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    verbose: false
+
+- task: Npm@1
+  displayName: 'npm install gulp'
+  inputs:
+    command: custom
+    verbose: false
+    customCommand: 'install gulp@3.9.1'
+
+- task: Npm@1
+  displayName: 'npm install gulp-bump'
+  inputs:
+    command: custom
+    verbose: false
+    customCommand: 'install gulp-bump@3.1.1'
+
+- task: Npm@1
+  displayName: 'npm install @octopusdeploy'
+  inputs:
+    command: custom
+    verbose: false
+    customCommand: 'install @octopusdeploy/gulp-octo@0.0.10'
+
+- task: Gulp@0
+  displayName: 'gulp publish'
+  inputs:
+    targets: publish
+    arguments: '--apiKey "API-UPTTG3HJVM4I4YYZEJVOUTFYCY" --host "https://deployer.thevirtualforge.com"'
+
+- task: octopusdeploy.octopus-deploy-build-release-tasks.octopus-create-release.OctopusCreateRelease@3
+  displayName: 'Create Octopus Release: app2-reporting-backend'
+  inputs:
+    OctoConnectedServiceName: 'V2go-deployer'
+    ProjectName: 'Projects-384'
+    Channel: Production
+    ChangesetCommentReleaseNotes: true
+    WorkItemReleaseNotes: true
+    DeployToEnvironment: Production
+    DeploymentProgress: true

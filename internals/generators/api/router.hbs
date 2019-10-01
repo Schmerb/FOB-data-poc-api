@@ -1,0 +1,114 @@
+/**
+* {{ properCase name }} Router
+*
+*
+*/
+
+
+const bodyParser = require('body-parser');
+
+const {{ camelCase name }} = require('./controller');
+
+const jsonParser = bodyParser.json();
+
+function {{ camelCase name }}Routes(router, authenticate) {
+/**
+* List {{ properCase name }}s
+*/
+router.get('/api/{{ camelCase name }}s', async (req, res) => {
+return {{ camelCase name }}
+.list{{ properCase name }}s()
+.then((data) => {
+return res.status(200).json(data); // 200 OK
+})
+.catch((err) => {
+if (err.reason === 'ValidationError') {
+return res.status(err.code).json(err);
+}
+return res.status(err.code || 500).send(err)
+});
+});
+
+/**
+* Fetch {{ properCase name }} by id
+*/
+router.get('/api/{{ camelCase name }}s/:id', async (req, res) => {
+const id = req.params.id;
+
+return {{ camelCase name }}
+.fetch{{ properCase name }}ById(id)
+.then((data) => {
+return res.status(200).json(data); // 200 OK
+})
+.catch((err) => {
+if (err.reason === 'ValidationError') {
+return res.status(err.code).json(err);
+}
+return res.status(err.code || 500).send(err)
+});
+});
+
+/**
+* Create {{ properCase name }}
+*/
+router.post(
+'/api/{{ camelCase name }}s',
+jsonParser,
+authenticate,
+async (req, res) => {
+const { body } = req;
+return {{ camelCase name }}
+.create{{ properCase name }}(body)
+.then((data) => {
+return res.status(200).json(data); // 200 OK
+})
+.catch((err) => {
+if (err.reason === 'ValidationError') {
+return res.status(err.code).json(err);
+}
+return res.sendStatus(err);
+});
+}
+);
+
+/**
+* Update {{ properCase name }}
+*/
+router.put('/api/{{ camelCase name }}s/:id', async (req, res) => {
+const id = req.params.id;
+const body = req.body;
+
+return {{ camelCase name }}
+.update{{ properCase name }}(id, body)
+.then((updated{{ properCase name }}) => {
+return res.status(200).json(updated{{ properCase name }});
+})
+.catch((err) => {
+if (err.reason === 'ValidationError') {
+return res.status(err.code).json(err);
+}
+return res.status(err.code || 500).send(err)
+});
+});
+
+/**
+* Destroy technician
+*/
+router.delete('/api/{{ camelCase name }}s/:id', authenticate, async (req, res) => {
+const id = req.params.id;
+
+return {{ camelCase name }}
+.destroy{{ properCase name }}(id)
+.then(() => {
+return res.sendStatus(200); // 200 OK
+})
+.catch((err) => {
+if (err.reason === 'ValidationError') {
+return res.status(err.code).json(err);
+}
+return res.status(err.code || 500).send(err)
+});
+});
+}
+
+module.exports = {{ camelCase name }}Routes;

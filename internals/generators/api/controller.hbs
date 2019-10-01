@@ -1,0 +1,135 @@
+/**
+* {{ properCase name }} Controller
+*
+*
+*/
+
+const {{ properCase name }}s = require('../../models/{{ camelCase name }}');
+
+const {
+checkForFields,
+checkForValidStrings,
+// checkForSizedFields,
+checkForValidType,
+} = require('../../utils/validators');
+
+const isDev = process.env.NODE_ENV !== 'production';
+
+/**
+* List {{ properCase name }}s
+*/
+exports.list{{ properCase name }}s = () =>
+new Promise((resolve, reject) => {
+{{ properCase name }}s.findAll()
+.then(({{ camelCase name }}s) => {
+resolve({{ camelCase name }}s);
+})
+.catch((err) => {
+// eslint-disable-next-line no-console
+if (isDev) console.error(err);
+
+reject({ code: 500 }); // 500 Internal Server Error
+});
+});
+
+/**
+* Fetch {{ properCase name }} by id
+*/
+exports.fetch{{ properCase name }}ById = ({{ camelCase name }}Id) =>
+new Promise((resolve, reject) => {
+{{ properCase name }}s.findByPk({{ camelCase name }}Id)
+.then(({{ camelCase name }}) => {
+resolve({{ camelCase name }} || null);
+})
+.catch((err) => {
+// eslint-disable-next-line no-console
+if (isDev) console.error(err);
+
+reject({ code: 500 }); // 500 Internal Server Error
+});
+});
+
+/**
+* create {{ properCase name }}
+*
+* User Required Fields: [{{ camelCase name }}Description]
+*/
+exports.create{{ properCase name }} = (new{{ properCase name }}) =>
+new Promise((resolve, reject) => {
+// - - - - - - - - - -
+// Validate user fields
+// - - - - - - - - - -
+
+// 1. check for required fields
+const fields = ['{{ camelCase name }}Description'];
+const fieldError = checkForFields(new{{ properCase name }}, fields);
+if (fieldError) return reject(fieldError); // return to stop code execution
+// 2. check for valid string fields
+const stringFields = ['{{ camelCase name }}Description'];
+const stringError = checkForValidStrings(new{{ properCase name }}, stringFields);
+if (stringError) return reject(stringError);
+
+{{ properCase name }}s.create(new{{ properCase name }})
+.then(({{ camelCase name }}) => {
+resolve({{ camelCase name }});
+})
+.catch((err) => {
+// eslint-disable-next-line no-console
+if (isDev) console.error(err);
+
+reject({ code: 500 }); // 500 Internal Server Error
+});
+});
+
+/**
+* update {{ properCase name }}
+*/
+exports.update{{ properCase name }} = ({{ camelCase name }}Id, data) =>
+new Promise((resolve, reject) => {
+const updatableFields = ['{{ camelCase name }}Id', '{{ camelCase name }}Description'];
+const updated{{ properCase name }} = {};
+for (let field of updatableFields) {
+if (field in data) {
+updated{{ properCase name }}[field] = data[field];
+}
+}
+
+{{ properCase name }}s.update(updated{{ properCase name }}, { where: { {{ camelCase name }}Id } })
+.then(([rowsEffected]) => {
+if (rowsEffected) {
+// fetch {{ properCase name }}
+return {{ properCase name }}s.findByPk({{ camelCase name }}Id);
+}
+return reject({
+reason: 'DatabaseError',
+message: 'No rows affected',
+location: 'For {{ camelCase name }}Id',
+});
+})
+.then(({{ camelCase name }}s) => {
+return resolve({{ camelCase name }}s);
+})
+.catch((err) => {
+// eslint-disable-next-line
+console.log({ err });
+
+reject({ code: 500 }); // 500 Internal Server Error
+});
+});
+
+/**
+* Destroy {{ properCase name }}s
+*/
+exports.destroy{{ properCase name }} = ({{ camelCase name }}Id) =>
+new Promise((resolve, reject) => {
+{{ properCase name }}s.destroy({ where: { {{ camelCase name }}Id } })
+.then((detailed{{ properCase name }}) => {
+resolve(detailed{{ properCase name }});
+})
+.catch((err) => {
+// eslint-disable-next-line no-console
+if (isDev) console.error(err);
+
+reject({ code: 500 }); // 500 Internal Server Error
+});
+});

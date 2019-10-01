@@ -1,0 +1,35 @@
+/**
+* {{ properCase name }} Model
+*
+*
+*/
+
+'use strict';
+
+const Sequelize = require('sequelize');
+const sequelize = require('../modules/sequelize').sequelize;
+
+const {{ properCase name }} = sequelize.define(
+'{{ properCase name }}',
+{
+{{ properCase name }}ID: {
+type: Sequelize.INTEGER,
+autoIncrement: true,
+primaryKey: true,
+},
+{{ properCase name }}Type: {
+type: Sequelize.STRING,
+allowNull: false,
+},
+{{ properCase name }}Description: {
+type: Sequelize.STRING,
+allowNull: false,
+},
+},
+{
+// options
+// hooks: {},
+}
+);
+
+module.exports = {{ properCase name }};
